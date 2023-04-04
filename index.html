@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        background-image: url(./back.avif);
+        background-position: center;
+        background-size: 100%;
+        height: 100vh;
+        background-repeat: no-repeat;
+        text-align: center;
+    }
+
+    .todo-box {
+        background: white;
+        display: inline-block;
+        padding: 35px;
+        border-radius: 13px;
+        margin-top: 100px;
+        text-align: start;
+    }
+
+    .todo-input {
+        height: 60px;
+        position: relative;
+        width: 300px;
+        margin-top: 9px;
+    }
+
+    .todo-input input {
+        width: 100%;
+        height: 40px;
+        border-radius: 20px;
+        border: 1px solid gray;
+        outline: 0;
+        padding: 0 0 0 10px;
+    }
+
+    .todo-input button {
+        position: absolute;
+        right: -11px;
+        top: 1px;
+        height: 40px;
+        border-radius: 20px;
+        width: 75px;
+        border: 0;
+        cursor: pointer;
+        background: #b209b2;
+        color: white;
+    }
+
+    li {
+        list-style: none;
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+        margin-top: 5px;
+    }
+
+    li::before {
+        content: '';
+        background: url(./checkbox-regular-24.png);
+        display: inline-block;
+        width: 20px;
+        height: 19px;
+        position: relative;
+        top: 2px;
+        margin-right: 4px;
+    }
+
+    li.checked {
+        color: gray;
+        text-decoration: line-through;
+    }
+
+    li.checked::before {
+        background: url(./checkbox-checked-solid-24.png);
+    }
+
+    /* li img{
+        position: relative;
+        top: 8px;
+    } */
+    li p {
+        position: absolute;
+        right: -5px;
+        top: 3px;
+        font-size: 12px;
+        padding: 3px;
+        cursor: pointer;
+        transition: 0.9s;
+    }
+
+    li p:hover {
+        background: #00000028;
+        border-radius: 13px;
+
+    }
+
+    li span {
+        position: absolute;
+        right: -15px;
+        top: 0px;
+        height: 26px;
+        width: 25px;
+        font-size: 22px;
+        color: #555;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    li span:hover {
+        background: #edeef0;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="todo-box">
+            <h1>To-Do List</h1>
+
+            <div class="todo-input">
+                <input type="text" id="text" placeholder="Add some text here">
+                <button onclick="addtask() ">Add</button>
+            </div>
+            <ul id="father">
+                <!-- <li class="" id="add">  kjjkj  </li> -->
+            </ul>
+            <!-- <img src="./checkbox-regular-24.png" > -->
+        </div>
+    </div>
+    <!-- <script src="./script.js"></script> -->
+    <script>
+        let text = document.getElementById('text');
+        let father = document.getElementById('father');
+        function addtask(){
+            if(text.value == ''){
+                alert('please fill your task first')
+            }
+            else{
+                let li = document.createElement('li');
+                li.innerHTML = text.value;
+                father.appendChild(li);
+                let span = document.createElement('span');
+                span.innerHTML = "\u00d7";
+                li.appendChild(span);
+            }
+            text.value = '';
+            save()     
+        }
+
+        father.addEventListener('click', function(a){
+            if(a.target.tagName === 'LI'){
+                a.target.classList.toggle('checked');
+                save()     
+            }
+            else if(a.target.tagName === 'SPAN'){
+                a.target.parentElement.remove();
+                save()     
+            }
+        })
+
+        function save(){
+            localStorage.setItem('data', father.innerHTML);
+        }   
+        // save()     
+        function show(){
+            father.innerHTML = localStorage.getItem('data');
+        }
+        show()
+    </script>
+</body>
+</html>
